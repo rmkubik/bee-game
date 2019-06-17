@@ -9,6 +9,7 @@ import {
 } from "kontra";
 import sprites from "../raw/images/sprites.png";
 import "./styles/index.css";
+import AssetLoader from "./game/Loader";
 
 const createTiles = (height, width) => {
   let count = 0;
@@ -28,15 +29,18 @@ const { canvas } = init("game");
 
 initKeys();
 
-let image = new Image();
-image.src = sprites;
+// let image = new Image();
+// image.src = sprites;
 
 let bg;
 let sprite;
 
-image.onload = () => {
+const loader = new AssetLoader();
+loader.register("sprites", sprites);
+
+loader.startLoading().then(() => {
   const spriteSheet = SpriteSheet({
-    image,
+    image: loader.get("sprites"),
     frameWidth: 8,
     frameHeight: 8,
     animations: {
@@ -84,7 +88,7 @@ image.onload = () => {
     tilesets: [
       {
         firstgid: 0,
-        image
+        image: loader.get("sprites")
       }
     ],
 
@@ -119,4 +123,8 @@ image.onload = () => {
   });
 
   loop.start(); // start the game
-};
+});
+
+// image.onload = () => {
+
+// };
