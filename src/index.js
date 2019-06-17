@@ -10,6 +10,20 @@ import {
 import sprites from "../raw/images/sprites.png";
 import "./styles/index.css";
 
+const createTiles = (height, width) => {
+  let count = 0;
+
+  return Array(height * width)
+    .fill(5)
+    .map(val => {
+      if (Math.floor(count / width) % 2 === 0) {
+        return count++ % 2 === 0 ? val : 6;
+      } else {
+        return count++ % 2 === 0 ? 6 : val;
+      }
+    });
+};
+
 const { canvas } = init("game");
 
 initKeys();
@@ -37,7 +51,7 @@ image.onload = () => {
     y: 0,
     width: 1000,
     height: 1000,
-    color: "#008751"
+    color: "#29adff"
   });
 
   sprite = Sprite({
@@ -65,8 +79,8 @@ image.onload = () => {
   let tileEngine = TileEngine({
     tilewidth: 8,
     tileheight: 8,
-    width: 3,
-    height: 3,
+    width: 16,
+    height: 16,
     tilesets: [
       {
         firstgid: 0,
@@ -78,7 +92,7 @@ image.onload = () => {
     layers: [
       {
         name: "ground",
-        data: [5, 5, 5, 5, 5, 5, 5, 5, 5]
+        data: createTiles(16, 16)
       }
     ]
   });
