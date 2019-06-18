@@ -4,13 +4,12 @@ import {
   GameLoop,
   initKeys,
   initPointer,
-  Sprite,
-  track,
   onPointerDown
 } from "kontra";
 
 import Map from "./Map";
 import Player from "./Player";
+import Flower from "./Flower";
 
 class Game {
   constructor(loader, { tilesWide, tilesHigh, tileSize }) {
@@ -35,6 +34,15 @@ class Game {
       animations: {
         bee: {
           frames: 34
+        },
+        seedling: {
+          frames: 2
+        },
+        sprout: {
+          frames: 1
+        },
+        flower: {
+          frames: 0
         }
       }
     });
@@ -43,13 +51,21 @@ class Game {
 
     this.map = new Map(loader, { tilesHigh, tilesWide, tileSize, gameScale });
 
+    this.seedlings = [];
     onPointerDown(({ x, y }, object) => {
-      console.log(x, y);
-      console.log(this.map.getTile(x, y));
+      this.seedlings.push(
+        new Flower({
+          ...this.map.getTile(x, y),
+          animations: this.spriteSheet.animations,
+          tileSize
+        })
+      );
     });
   }
 
   update() {
+    this.seedlings.forEach(seedling => seedling.update());
+
     this.player.update();
 
     // wrap the sprites position when it reaches
@@ -61,6 +77,7 @@ class Game {
 
   render() {
     this.map.render();
+    this.seedlings.forEach(seedling => seedling.render());
     this.player.render();
   }
 
