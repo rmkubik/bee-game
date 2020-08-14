@@ -1,16 +1,22 @@
 import { Sprite } from "kontra";
 
+function intBetweenInclusive(low, high) {
+  return Math.floor(Math.random() * (high - low + 1)) + low;
+}
+
 class Flower {
   constructor({ row, col, animations, tileSize }) {
     this.sprite = Sprite({
       x: col * tileSize,
       y: row * tileSize,
-      animations
+      animations,
     });
 
     this.growthStage = 0;
     this.growthInterval = 2000;
     this.lastGrowthStageTimeStamp = Date.now();
+
+    this.flower = intBetweenInclusive(0, 4);
   }
 
   update() {
@@ -27,7 +33,10 @@ class Flower {
         this.sprite.playAnimation("sprout");
         break;
       case 2:
-        this.sprite.playAnimation("flower");
+        this.sprite.playAnimation(`flower${this.flower}`);
+        break;
+      default:
+        // other growth stages are ignored
         break;
     }
   }

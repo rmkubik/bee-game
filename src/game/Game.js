@@ -4,7 +4,7 @@ import {
   GameLoop,
   initKeys,
   initPointer,
-  onPointerDown
+  onPointerDown,
 } from "kontra";
 
 import Map from "./Map";
@@ -24,7 +24,7 @@ class Game {
 
     this.loop = GameLoop({
       update: () => this.update(),
-      render: () => this.render()
+      render: () => this.render(),
     });
 
     this.spriteSheet = SpriteSheet({
@@ -33,18 +33,38 @@ class Game {
       frameHeight: 8,
       animations: {
         bee: {
-          frames: 34
+          frames: 34,
+          loop: false,
         },
         seedling: {
-          frames: 2
+          frames: 2,
+          loop: false,
         },
         sprout: {
-          frames: 1
+          frames: 1,
+          loop: false,
         },
-        flower: {
-          frames: 0
-        }
-      }
+        flower0: {
+          frames: 0,
+          loop: false,
+        },
+        flower1: {
+          frames: 8,
+          loop: false,
+        },
+        flower2: {
+          frames: 16,
+          loop: false,
+        },
+        flower3: {
+          frames: 24,
+          loop: false,
+        },
+        flower4: {
+          frames: 32,
+          loop: false,
+        },
+      },
     });
 
     this.player = new Player(80, 100, this.spriteSheet.animations);
@@ -57,14 +77,14 @@ class Game {
         new Flower({
           ...this.map.getTile(x, y),
           animations: this.spriteSheet.animations,
-          tileSize
+          tileSize,
         })
       );
     });
   }
 
   update() {
-    this.seedlings.forEach(seedling => seedling.update());
+    this.seedlings.forEach((seedling) => seedling.update());
 
     this.player.update();
 
@@ -77,7 +97,7 @@ class Game {
 
   render() {
     this.map.render();
-    this.seedlings.forEach(seedling => seedling.render());
+    this.seedlings.forEach((seedling) => seedling.render());
     this.player.render();
   }
 
